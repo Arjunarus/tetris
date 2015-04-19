@@ -81,9 +81,9 @@ private:
     int height;
 };
 
-class TetrisCap {
+class TetrisCup {
 public:
-    TetrisCap();
+    TetrisCup();
     void setSize(int wx, int wy);
     void putFigure(const Figure &_figure);
     bool hasPlace(const Figure &_figure);
@@ -102,7 +102,7 @@ private:
 
 class Figure {
 public:
-    Figure(const TetrisCap &cap);
+    Figure(const TetrisCup &cap);
     Figure(const int &_shape, const QPoint &_pos, const unsigned int &_angle) :
         shape(_shape),
         position(_pos),
@@ -143,7 +143,7 @@ protected:
 private:
     Ui::MainWindow *    ui;
     QTimer              m_timer;
-    TetrisCap           m_cap;
+    TetrisCup           m_cup;
     Figure         *    cur_figure;
     QGraphicsScene      m_scene;
     int m_score;

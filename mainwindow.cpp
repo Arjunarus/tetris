@@ -61,7 +61,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
     }
 
-    if (m_cap.hasPlace(newFig)) {
+    if (m_cup.hasPlace(newFig)) {
         delete cur_figure;
         cur_figure = new Figure(newFig);
     }
@@ -71,7 +71,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 void MainWindow::draw()
 {
     m_scene.clear();
-    m_cap.drawOnScene(m_scene);
+    m_cup.drawOnScene(m_scene);
     cur_figure->drawOnScene(m_scene);
     ui->lcdScore->display(m_score);
     ui->lcdLevel->display(m_level);
@@ -81,12 +81,12 @@ void MainWindow::onTimerTick()
 {
     Figure newFig = *cur_figure;
     newFig.setPosition(newFig.getPosition().x(), cur_figure->getPosition().y() + 1);
-    if (m_cap.hasPlace(newFig)) {
+    if (m_cup.hasPlace(newFig)) {
         delete cur_figure;
         cur_figure = new Figure(newFig);
     } else {
-        m_cap.putFigure(*cur_figure);
-        m_score += m_cap.clearedLines() * 100 + m_cap.clearedLines() > 0 ? 100 : 0;
+        m_cup.putFigure(*cur_figure);
+        m_score += m_cup.clearedLines() * 100 + m_cup.clearedLines() > 0 ? 100 : 0;
         if (m_score > NEXTLEVELSCORE) {
             m_score = 0;
             if (m_level < MAX_LEVEL)
@@ -96,8 +96,8 @@ void MainWindow::onTimerTick()
             init();
         }
         delete cur_figure;
-        cur_figure = new Figure(m_cap);
-        if (m_cap.filled())
+        cur_figure = new Figure(m_cup);
+        if (m_cup.filled())
             gameOver();
     }
     draw();
@@ -113,37 +113,37 @@ void MainWindow::startGame()
 
 void MainWindow::init()
 {
-    m_cap.clear();
+    m_cup.clear();
     switch (m_level) {
     default:
     case 1:
-        m_cap.setSize(10, 20);
+        m_cup.setSize(10, 20);
         m_speed = 600;
         break;
     case 2:
-        m_cap.setSize(5, 40);
+        m_cup.setSize(5, 40);
         m_speed = 500;
         break;
     case 3:
-        m_cap.setSize(20, 40);
+        m_cup.setSize(20, 40);
         m_speed = 400;
         break;
     case 4:
-        m_cap.setSize(40, 50);
+        m_cup.setSize(40, 50);
         m_speed = 300;
         break;
     case 5:
-        m_cap.setSize(40, 30);
+        m_cup.setSize(40, 30);
         m_speed = 250;
         break;
     case 6:
-        m_cap.setSize(40, 20);
+        m_cup.setSize(40, 20);
         m_speed = 200;
         break;
     }
     if (cur_figure != NULL)
         delete cur_figure;
-    cur_figure = new Figure(m_cap);
+    cur_figure = new Figure(m_cup);
 }
 
 void MainWindow::gameOver()
@@ -160,20 +160,20 @@ void MainWindow::endGame()
 
 // =============================================================================
 
-TetrisCap::TetrisCap() :
+TetrisCup::TetrisCup() :
     m_height(20),
     m_width(10),
     m_content(m_width, m_height)
 {}
 
-void TetrisCap::setSize(int wx, int wy)
+void TetrisCup::setSize(int wx, int wy)
 {
     m_height = wy;
     m_width = wx;
     m_content.setSize(wx, wy);
 }
 
-void TetrisCap::putFigure(const Figure &_figure)
+void TetrisCup::putFigure(const Figure &_figure)
 {
     m_clearedLines = 0;
     Matrix figMatrix = _figure.getContent();
@@ -199,7 +199,7 @@ void TetrisCap::putFigure(const Figure &_figure)
     }
 }
 
-bool TetrisCap::hasPlace(const Figure &_figure)
+bool TetrisCup::hasPlace(const Figure &_figure)
 {
     Matrix fContent(_figure.getContent());
 
@@ -217,7 +217,7 @@ bool TetrisCap::hasPlace(const Figure &_figure)
     return true;
 }
 
-void TetrisCap::drawOnScene(QGraphicsScene &_scene)
+void TetrisCup::drawOnScene(QGraphicsScene &_scene)
 {
     _scene.addItem(new QGraphicsRectItem(-1, -1, BRICK * m_width + 2, BRICK * m_height + 2));
 
@@ -232,12 +232,12 @@ void TetrisCap::drawOnScene(QGraphicsScene &_scene)
         }
 }
 
-void TetrisCap::clear()
+void TetrisCup::clear()
 {
     m_content.clear();
 }
 
-bool TetrisCap::filled()
+bool TetrisCup::filled()
 {
     bool res = false;
     for (int i = 0; i < m_width; ++i)
@@ -250,7 +250,7 @@ bool TetrisCap::filled()
 
 // =============================================================================
 
-Figure::Figure(const TetrisCap &cap)
+Figure::Figure(const TetrisCup &cap)
 {
     shape = rand(7);
     position = QPoint(cap.getWidth() / 2 - 2, 0);// TODO: use WIDTH of cap
