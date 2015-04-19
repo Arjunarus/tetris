@@ -1,0 +1,36 @@
+
+figure
+draw_cap
+
+point = getTitlePoint()
+
+switch(point){
+startgame:{
+    game()
+}
+
+exit: {
+
+}
+}
+
+game() {
+  fig = generate_figure()  
+    main_loop() {
+      draw()
+
+      readkey()
+      if (keyUp()) rotate()
+      if (keydown()) fig_down()
+      if (keyleft()) fig_left()
+      if (keyright()) fig_right()
+
+      if tick_over() {
+	fig_down()
+	new_tick_start()
+      }
+      process_lines()
+      if checkForEnd() break()
+  }
+  end()
+}
