@@ -86,8 +86,8 @@ void MainWindow::onTimerTick()
         cur_figure = new Figure(newFig);
     } else {
         m_cup.putFigure(*cur_figure);
-        m_score += m_cup.clearedLines() * 100 + m_cup.clearedLines() > 0 ? 100 : 0;
-        if (m_score > NEXTLEVELSCORE) {
+        m_score += m_cup.clearedLines() * 100 + (m_cup.clearedLines() > 0 ? 100 : 0);
+        if (m_score >= NEXTLEVELSCORE) {
             m_score = 0;
             if (m_level < MAX_LEVEL)
                 m_level++;
@@ -253,7 +253,7 @@ bool TetrisCup::filled()
 Figure::Figure(const TetrisCup &cap)
 {
     shape = rand(7);
-    position = QPoint(cap.getWidth() / 2 - 2, 0);// TODO: use WIDTH of cap
+    position = QPoint(cap.getWidth() / 2 - 2, 0);
     angle = rand(4);
     m_color = QColor(rand(256), rand(256), rand(256));
 }
